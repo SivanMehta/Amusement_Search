@@ -11,11 +11,25 @@ import random
 # each has a vision of 1/10th of the overall size of the "park"
 # the park is a square with no obstacles
 
-def walkingTrial([parkSize = 10]):
-    number = 1
+def walkingTrial(parkSize = 10):
+    number = 0
 
     # let's assume they start in the same place
     husband = [random.randint(1, parkSize), random.randint(1, parkSize)]
     wife = [random.randint(1, parkSize), random.randint(1, parkSize)]
 
     return number
+
+def runTrials(trialCount = 1000):
+    outcomes = [0,0]
+
+    for trial in xrange(trialCount):
+        if walkingTrial(10) > 0:
+            outcomes[0] += 1
+
+        outcomes[1] += 1
+
+    print "They found each other in %d/%d trials" % (outcomes[0], outcomes[1])
+
+
+runTrials()
