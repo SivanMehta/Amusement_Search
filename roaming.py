@@ -18,7 +18,7 @@ def walk(person, parkSize):
 # this is a really lazy test, as it tests via exhaustion
 def testWalk():
 
-    # test small park
+    # small park
     person = [5, 5]
     parkSize = 10
 
@@ -27,7 +27,7 @@ def testWalk():
         assert person[0] >= 0 and person[0] <= parkSize
         assert person[1] >= 0 and person[1] <= parkSize
 
-    # test large park
+    # large park
     person = [25, 25]
     parkSize = 50
 
@@ -36,7 +36,7 @@ def testWalk():
         assert person[0] >= 0 and person[0] <= parkSize
         assert person[1] >= 0 and person[1] <= parkSize
 
-    # start in corner
+    # starting in corner
     person = [0, 0]
     parkSize = 50
 
