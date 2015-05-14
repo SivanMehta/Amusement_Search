@@ -3,12 +3,13 @@
 # If I wanted to randomly find someone in an amusement park, would my odds of finding
 # them be greater if I stood still or roamed around?
 
-import random
+import random, numpy, sys
+from matplotlib import pyplot as plt
 
 # Assumptions made:
 # there are two people looking for eachother
 # both of them, if they are moving, are moving in a random direction each step
-# each has a vision of 1/10th of the width of the "park"
+# each has a vision of 10 cells
 # the park is a square with no obstacles
 
 def walk(person, parkSize):
@@ -46,9 +47,10 @@ def testWalk():
         assert person[1] >= 0 and person[1] <= parkSize
 
 def withinSight(person1, person2):
-    return ((person1[0] - person2[0])**2 + (person2[1] - person1[1])**2) < 10
+    return ((person1[0] - person2[0])**2 + (person1[1] - person2[1])**2) < 10
 
-def walkingTrial(parkSize = 10, limit = 10000):
+# both walking
+def walkingTrial(parkSize = 100, limit = 10000):
     steps = 0
 
     # let's assume they start in the same place
@@ -65,18 +67,24 @@ def walkingTrial(parkSize = 10, limit = 10000):
 
     return steps
 
-def runTrials(trialCount = 1000):
-    outcomes = [0,0]
+def runTrials(trialCount = 1000, parkSize = 40):
+    outcomes = []
 
     for trial in xrange(trialCount):
-        if walkingTrial(10) > 0:
-            outcomes[0] += 1
+        outcome = walkingTrial(parkSize)
+        if outcome >= 0:
+            outcomes.append(outcome)
 
-        outcomes[1] += 1
+        sys.stdout.flush()
+        sys.stdout.write("\rFinished trial %d/%d" % (trial + 1, trialCount) )
 
-    print "They found each other in %d/%d trials" % (outcomes[0], outcomes[1])
+    print "... done!"
+
+    print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
+    plt.hist(outcomes)
+    plt.show()
+
 
 # testWalk()
 
-runTrials()
-
+runTrials(parkSize = 100)
