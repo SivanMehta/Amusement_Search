@@ -53,12 +53,30 @@ def withinSight(person1, person2):
 def walkingTrial(parkSize = 100, limit = 10000):
     steps = 0
 
-    # let's assume they start in the same place
+    # let's assume they start in random places
     husband = [random.randint(1, parkSize), random.randint(1, parkSize)]
     wife = [random.randint(1, parkSize), random.randint(1, parkSize)]
 
     while(not withinSight(husband, wife)):
         walk(husband, parkSize)
+        walk(wife, parkSize)
+
+        steps += 1
+        if steps > limit:
+            return -1
+
+    return steps
+
+# one walking (let's say the husband gets lost and the wife has to go find him)
+def sittingTrial(parkSize = 100, limit = 10000):
+    steps = 0
+
+    # let's assume they start in random places
+    husband = [random.randint(1, parkSize), random.randint(1, parkSize)]
+    wife = [random.randint(1, parkSize), random.randint(1, parkSize)]
+
+    while(not withinSight(husband, wife)):
+        # walk(husband, parkSize)
         walk(wife, parkSize)
 
         steps += 1
@@ -81,10 +99,13 @@ def runTrials(trialCount = 1000, parkSize = 40):
     print "... done!"
 
     print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
-    plt.hist(outcomes)
+    plt.hist(outcomes, bins = 20)
+    plt.ylabel("Frequency")
+    plt.xlabel("Steps Taken")
+    plt.grid(True)
     plt.show()
 
 
 # testWalk()
 
-runTrials(parkSize = 100)
+runTrials(parkSize = 100, trialCount = 10000)
