@@ -48,7 +48,7 @@ def testWalk():
 def withinSight(person1, person2):
     return ((person1[0] - person2[0])**2 + (person2[1] - person1[1])**2) < 10
 
-def walkingTrial(parkSize = 10):
+def walkingTrial(parkSize = 10, limit = 10000):
     steps = 0
 
     # let's assume they start in the same place
@@ -60,6 +60,8 @@ def walkingTrial(parkSize = 10):
         walk(wife, parkSize)
 
         steps += 1
+        if steps > limit:
+            return -1
 
     return steps
 
