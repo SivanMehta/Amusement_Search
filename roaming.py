@@ -89,6 +89,7 @@ def runTrials(trialCount = 1000, parkSize = 40):
     outcomes = []
 
     for trial in xrange(trialCount):
+        # outcome = sittingTrial(parkSize)
         outcome = walkingTrial(parkSize)
         if outcome >= 0:
             outcomes.append(outcome)
@@ -102,6 +103,7 @@ def runTrials(trialCount = 1000, parkSize = 40):
     plt.hist(outcomes, bins = 20)
     plt.ylabel("Frequency")
     plt.xlabel("Steps Taken")
+    plt.title("Steps Taken while looking in a %i x %i 'park'" % (parkSize, parkSize))
     plt.grid(True)
     plt.show()
 
