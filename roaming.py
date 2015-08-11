@@ -3,10 +3,16 @@
 # If I wanted to randomly find someone in an amusement park, would my odds of finding
 # them be greater if I stood still or roamed around?
 
-import random, numpy, sys
+# for doing calculations and plotting
+import random, numpy
 from matplotlib import pyplot as plt
+
+# for doing trails in parallel
 from Queue import Queue
 from threading import Thread
+
+# for counting cores
+import psutil
 
 # Assumptions made:
 # there are two people looking for eachother
@@ -90,8 +96,8 @@ def sittingTrial(parkSize = 100, limit = 10000):
 def runTrials(trialCount = 1000, parkSize = 40):
 
     q = Queue(maxsize=0)
-    # generally recommended to have a max of 3 threads per core (according to by boss)
-    num_threads = 6
+    # generally recommended to have a max of 4 threads per core (according to by boss)
+    num_threads = psutil.cpu_count() * 4
     outcomes = []
 
     def trail_thread(q):
