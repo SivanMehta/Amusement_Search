@@ -120,16 +120,15 @@ def runTrials(trialCount = 1000, parkSize = 40):
         sys.stdout.write("\rStarted %d threads... " % (i + 1))
     print "all threads started!" 
 
+    print "Starting trails..."
     # start the trails
-    print "Starting trails... ",
-    for i in xrange(trialCount):
-        q.put(i)
-    print "done!"
-
-    # wait for all threads to be done
-    print "Waiting for threads to finish... "
-    q.join()
-    print "\tdone!"
+    for y in range (10):
+        for x in range(trialCount/10):
+            q.put(x + y * 100)
+        q.join()
+        sys.stdout.flush()
+        sys.stdout.write("\rBatch " + str(y + 1) + " of 10 completed... ")
+    print "Done!"
 
     print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
     plt.hist(outcomes, bins = 20)
