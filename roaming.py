@@ -14,6 +14,9 @@ from threading import Thread
 # for counting cores
 import psutil
 
+# for printing things in a pretty way via `sys.stdout`
+import sys
+
 # Assumptions made:
 # there are two people looking for eachother
 # both of them, if they are moving, are moving in a random direction each step
@@ -102,7 +105,7 @@ def runTrials(trialCount = 1000, parkSize = 40):
 
     def trail_thread(q):
         while True:
-            print q.get()
+            q.get()
             outcome = walkingTrial(parkSize)
             if outcome >= 0:
                 outcomes.append(outcome)
@@ -113,14 +116,20 @@ def runTrials(trialCount = 1000, parkSize = 40):
         worker = Thread(target = trail_thread, args = (q,))
         worker.setDaemon(True)
         worker.start()
-        print "started %d threads" % (i + 1)
+        sys.stdout.flush()
+        sys.stdout.write("\rStarted %d threads... " % (i + 1))
+    print "all threads started!" 
 
     # start the trails
+    print "Starting trails... ",
     for i in xrange(trialCount):
         q.put(i)
+    print "done!"
 
     # wait for all threads to be done
+    print "Waiting for threads to finish... "
     q.join()
+    print "\tdone!"
 
     print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
     plt.hist(outcomes, bins = 20)
