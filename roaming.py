@@ -5,6 +5,8 @@
 
 import random, numpy, sys
 from matplotlib import pyplot as plt
+from Queue import Queue
+from threading import Thread
 
 # Assumptions made:
 # there are two people looking for eachother
@@ -86,18 +88,33 @@ def sittingTrial(parkSize = 100, limit = 10000):
     return steps
 
 def runTrials(trialCount = 1000, parkSize = 40):
+
+    q = Queue(maxsize=0)
+    # generally recommended to have a max of 3 threads per core (according to by boss)
+    num_threads = 6
     outcomes = []
 
-    for trial in xrange(trialCount):
-        # outcome = sittingTrial(parkSize)
-        outcome = walkingTrial(parkSize)
-        if outcome >= 0:
-            outcomes.append(outcome)
+    def trail_thread(q):
+        while True:
+            print q.get()
+            outcome = walkingTrial(parkSize)
+            if outcome >= 0:
+                outcomes.append(outcome)
+            q.task_done()
 
-        sys.stdout.flush()
-        sys.stdout.write("\rFinished trial %d/%d" % (trial + 1, trialCount) )
+    # start the threads
+    for i in xrange(num_threads):
+        worker = Thread(target = trail_thread, args = (q,))
+        worker.setDaemon(True)
+        worker.start()
+        print "started %d threads" % (i + 1)
 
-    print "... done!"
+    # start the trails
+    for i in xrange(trialCount):
+        q.put(i)
+
+    # wait for all threads to be done
+    q.join()
 
     print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
     plt.hist(outcomes, bins = 20)
@@ -110,4 +127,4 @@ def runTrials(trialCount = 1000, parkSize = 40):
 
 # testWalk()
 
-runTrials(parkSize = 100, trialCount = 10000)
+runTrials(parkSize = 100, trialCount = 1000)
