@@ -4,7 +4,7 @@
 # them be greater if I stood still or roamed around?
 
 # for doing calculations and plotting
-import random, numpy
+import random, numpy, time
 from matplotlib import pyplot as plt
 
 # for doing trails in parallel
@@ -120,14 +120,15 @@ def runTrials(trialCount = 1000, parkSize = 40):
         sys.stdout.write("\rStarted %d threads... " % (i + 1))
     print "all threads started!" 
 
-    print "Starting trails..."
+    print "Starting trials..."
     # start the trails
+    start = time.time()
     for y in range (10):
         for x in range(trialCount/10):
             q.put(x + y * 100)
         q.join()
         sys.stdout.flush()
-        sys.stdout.write("\rBatch " + str(y + 1) + " of 10 completed... ")
+        sys.stdout.write("\rBatch " + str(y + 1) + " of 10 completed after %2.2fs... " % (time.time() - start))
     print "Done!"
 
     print "Median Number of Steps --> %d for a %dx%d 'park'" % (numpy.median(outcomes), parkSize, parkSize)
