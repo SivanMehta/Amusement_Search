@@ -12,17 +12,18 @@ In addition to answering the question, I also wanted to explore a useful way of 
 ```bash
 $ python roaming.py
 Started 16 threads... all threads started!
-Batch 10 of 10 completed... Done!
-Median Number of Steps --> 2799 for a 100x100 'park'
+Starting trials...
+Batch 10 of 10 completed after 49.64s... Done!
+Median Number of Steps --> 2863 for a 100x100 'park'
 ```
 
-This trail is expected to run for about 1.5 minutes
+This trail is expected to run for about ~1 minute
 
 ```bash
 $ time python roaming.py > out.log
-real	1m27.551s
-user	0m45.280s
-sys		0m17.336s
+real    1m4.540s
+user    0m45.377s
+sys 0m17.091s
 ```
 
 ### Requirements
